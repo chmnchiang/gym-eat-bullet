@@ -73,12 +73,12 @@ class BaseEnv(gym.Env):
 
     def _step(self, action):
         action = int(action)
-        print('Action =', action)
+        # print('Action =', action)
         assert 0 <= action < self.action_space.n
         
         rew, done = self._step_env(action)
         self.step_cnt += 1
-        print(self.step_cnt, self.max_step)
+        # print(self.step_cnt, self.max_step)
         if self.max_step > 0 and self.step_cnt > self.max_step:
             done = True
         self._draw()
