@@ -2,12 +2,12 @@ import numpy as np
 from enum import IntEnum
 from typing import Tuple
 
-if __name__ == '__main__':
-    from point import Point
-    from web_gui_backend import WebGUIBackend
-else:
+try:
     from .point import Point
     from .web_gui_backend import WebGUIBackend
+except SystemError:
+    from point import Point
+    from web_gui_backend import WebGUIBackend
 
 
 class EatBulletEnv(WebGUIBackend):
@@ -70,7 +70,6 @@ class EatBulletEnv(WebGUIBackend):
     def _check_eaten(self) -> float:
         if self.player_pos not in self.foods_pos:
             return 0.
-        print(self.player_pos, self.foods_pos)
 
         self.foods_pos.remove(self.player_pos)
         self.foods_pos.append(self._rand_pos(self.foods_pos))
@@ -105,7 +104,7 @@ if __name__ == '__main__':
     import time
     try:
         while True:
-            time.sleep(0.1)
+            time.sleep(0.05)
             env.step(np.random.randint(5))
     except KeyboardInterrupt:
         env.end()

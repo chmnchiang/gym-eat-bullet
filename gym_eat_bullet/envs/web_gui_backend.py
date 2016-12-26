@@ -4,13 +4,14 @@ import aiohttp
 from aiohttp import web
 from aiohttp_index import IndexMiddleware
 from typing import Tuple
+from concurrent.futures import CancelledError
 import json
 import os
 
-if __name__ == '__main__':
-    from base_env import BaseEnv
-else:
+try:
     from .base_env import BaseEnv
+except SystemError:
+    from base_env import BaseEnv
 
 class WebGUIBackend(BaseEnv):
 
@@ -47,9 +48,13 @@ class WebGUIBackend(BaseEnv):
         async def websocket_handler(request):
             ws = web.WebSocketResponse()
             await ws.prepare(request)
-            while True:
+            while not ws.closed:
                 ws.send_str(json.dumps(self.get_bitmap().tolist()))
-                await asyncio.sleep(1 / self.fps)
+                try:
+                    await asyncio.sleep(1 / self.fps)
+                except CancelledError:
+                    break
+
             return ws
         
         app.router.add_get('/ws', websocket_handler)
