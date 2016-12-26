@@ -56,8 +56,8 @@ class WebGUIBackend(BaseEnv):
         static_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
         app.router.add_static('/', static_path)
         handler = app.make_handler()
-        print('Server start at 0.0.0.0:3000')
-        coro = loop.create_server(handler, '0.0.0.0', 3000)
+        print('Server start at 0.0.0.0:60000')
+        coro = loop.create_server(handler, '0.0.0.0', 60000)
         server = loop.run_until_complete(coro)
         loop.run_forever()
 
