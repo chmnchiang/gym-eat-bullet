@@ -25,7 +25,7 @@ class EatBulletEnv(WebGUIBackend):
     }
 
     def __init__(self,
-                 grid_size: Tuple[int, int] = (20, 20),
+                 grid_size: Tuple[int, int] = (10, 10),
                  *,
                  food_n: int = 3,
                  max_step=500) -> None:
@@ -39,7 +39,7 @@ class EatBulletEnv(WebGUIBackend):
 
     def _init(self):
         self.foods_pos = []
-        for i in range(4):
+        for i in range(self.food_n):
             self.foods_pos.append(self._rand_pos(set(self.foods_pos)))
 
         self.player_pos = self._rand_pos(set(self.foods_pos))
